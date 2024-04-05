@@ -1,0 +1,25 @@
+
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Document
+    body
+        h1 Danh sách người dùng
+        table
+            thead
+                tr
+                    td id
+                    td name
+                    td email
+                    td password
+                    td image
+            tbody
+                each users in user
+                    tr
+                        td= users.id
+                        td= users.name
+                        td= users.email
+                        td= users.password
+                        td= users.image
