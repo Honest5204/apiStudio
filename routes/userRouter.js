@@ -66,4 +66,44 @@ router.put('/updateUser/:id', async (req, res) => {
     }
 });
 
+router.get('/getId/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await Users.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Không tìm thấy người dùng với ID cung cấp!' });
+        }
+        res.json({password : user.password});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Lỗi khi lấy thông tin người dùng!' });
+    }
+});
+
+router.put('/updatePassword/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const newPassword = req.body.password; // Lấy mật khẩu mới từ body của request
+
+        // Kiểm tra xem mật khẩu mới có được cung cấp không
+        if (!newPassword) {
+            return res.status(400).json({ message: 'Mật khẩu mới không được để trống!' });
+        }
+
+        const user = await Users.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Không tìm thấy người dùng với ID cung cấp!' });
+        }
+
+        // Cập nhật mật khẩu mới cho người dùng
+        user.password = newPassword;
+        await user.save();
+
+        res.json({ message: 'Mật khẩu của người dùng đã được cập nhật thành công!' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Lỗi khi cập nhật mật khẩu người dùng!' });
+    }
+});
+
 module.exports = router;
